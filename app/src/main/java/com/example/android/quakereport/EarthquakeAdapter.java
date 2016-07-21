@@ -49,9 +49,23 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
                 getContext().getString(R.string.magnitude_string_format),
                 currentEarthquake.getMagnitude()));
 
-        // set value for View with id place in list_item.xml for the convertView
-        TextView placeTextView = (TextView) convertView.findViewById(R.id.place);
-        placeTextView.setText(currentEarthquake.getPlace());
+        // logic for splitting primary and secondary text
+        String place = currentEarthquake.getPlace();
+        String primary = place;
+        String secondary = "Near to";
+        if (Character.isDigit(place.charAt(0))) {
+            int index = place.indexOf(" of ");
+            secondary = place.substring(0, index);
+            primary = place.substring(index + 4);
+        }
+
+        // set value for primary place
+        TextView primaryPlace = (TextView) convertView.findViewById(R.id.primary_place);
+        primaryPlace.setText(primary);
+
+        // set value for secondary place
+        TextView secondaryPlace = (TextView) convertView.findViewById(R.id.secondary_place);
+        secondaryPlace.setText(secondary);
 
         // set value for View with id date in list_item.xml for the convertView
         TextView dateTextView = (TextView) convertView.findViewById(R.id.date);

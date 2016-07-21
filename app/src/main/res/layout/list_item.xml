@@ -18,16 +18,33 @@
     android:layout_marginEnd="@dimen/list_item_right_padding"
     android:layout_marginRight="@dimen/list_item_right_padding"
     tools:text="7.2"/>
-<TextView
-    android:id="@+id/place"
-    style="@style/ListItemTextStyle"
-    android:layout_gravity="center_vertical"
-    android:layout_width="0dp"
-    android:layout_marginEnd="@dimen/list_item_right_padding"
-    android:layout_marginRight="@dimen/list_item_right_padding"
-    android:layout_weight="1"
-    tools:text="San Francisco"/>
     <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/secondary_place"
+            style="@style/ListItemTextStyle"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/list_item_right_padding"
+            android:layout_marginRight="@dimen/list_item_right_padding"
+            tools:text="43 SE of"/>
+
+        <TextView
+            android:id="@+id/primary_place"
+            style="@style/ListItemTextStyle"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/list_item_right_padding"
+            android:layout_marginRight="@dimen/list_item_right_padding"
+            tools:text="San Francisco"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
