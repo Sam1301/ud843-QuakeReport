@@ -2,7 +2,7 @@ package com.example.android.quakereport;
 
 /**
  * {@link Earthquake} clas to store data for each earthquake like
- * location {@link Earthquake#mPlace}, date {@link Earthquake#mDate} and
+ * location {@link Earthquake#mPlace}, date {@link Earthquake#mDateInMillis} and
  * magnitude {@link Earthquake#mMagnitude}
  */
 public class Earthquake {
@@ -10,38 +10,38 @@ public class Earthquake {
     private String mPlace;
 
     // to store date
-    private String mDate;
+    private long mDateInMillis;
 
     // to store magnitude
-    private float mMagnitude;
+    private double mMagnitude;
 
     /**
      * Constructor to initialize fields
      * @param magnitude magnitude {@link Earthquake#mMagnitude}
      * @param place place {@link Earthquake#mPlace}
-     * @param date date {@link Earthquake#mDate}
+     * @param dateInMillis date {@link Earthquake#mDateInMillis}
      */
-    public Earthquake(float magnitude, String place, String date) {
+    public Earthquake(double magnitude, String place, long dateInMillis) {
         mMagnitude = magnitude;
         mPlace = place;
-        mDate = date;
+        mDateInMillis = dateInMillis;
     }
 
     /**
      * Returns the magnitude of earthquake
      * @return magnitude {@link Earthquake#mMagnitude}
      */
-    public float getMagnitude() {
+    public double getMagnitude() {
         return mMagnitude;
     }
 
 
     /**
      * Returns the date of occurrence of earthquake
-     * @return date {@link Earthquake#mDate}
+     * @return date {@link Earthquake#mDateInMillis}
      */
-    public String getDate() {
-        return mDate;
+    public long getDateInMillis() {
+        return mDateInMillis;
     }
 
     /**
