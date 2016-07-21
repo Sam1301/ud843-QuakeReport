@@ -26,4 +26,29 @@ public class Earthquake {
         mPlace = place;
         mDate = date;
     }
+
+    /**
+     * Returns the magnitude of earthquake
+     * @return magnitude {@link Earthquake#mMagnitude}
+     */
+    public float getMagnitude() {
+        return mMagnitude;
+    }
+
+
+    /**
+     * Returns the date of occurrence of earthquake
+     * @return date {@link Earthquake#mDate}
+     */
+    public String getDate() {
+        return mDate;
+    }
+
+    /**
+     * Returns the location of earthquake
+     * @return location {@link Earthquake#mPlace}
+     */
+    public String getPlace() {
+        return mPlace;
+    }
 }
