@@ -52,10 +52,10 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // logic for splitting primary and secondary text
         String place = currentEarthquake.getPlace();
         String primary = place;
-        String secondary = "Near to";
+        String secondary = "Near the";
         if (Character.isDigit(place.charAt(0))) {
             int index = place.indexOf(" of ");
-            secondary = place.substring(0, index);
+            secondary = place.substring(0, index) + " of";
             primary = place.substring(index + 4);
         }
 
