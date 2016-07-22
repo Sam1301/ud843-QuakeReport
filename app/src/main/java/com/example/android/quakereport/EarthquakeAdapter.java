@@ -1,6 +1,8 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -45,9 +48,14 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // set value for View with id magnitude in list_item.xml for the convertView
         TextView magnitudeTextView = (TextView) convertView.findViewById(R.id.magnitude);
-        magnitudeTextView.setText(String.format(
-                getContext().getString(R.string.magnitude_string_format),
-                currentEarthquake.getMagnitude()));
+        // format the double value to display magnitude only up to 1 decimal place
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        magnitudeTextView.setText(decimalFormat.format(currentEarthquake.getMagnitude()));
+
+        // set color of magnitude TextView background depending on its value
+        GradientDrawable gradientDrawable = (GradientDrawable) magnitudeTextView.getBackground();
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
+        gradientDrawable.setColor(magnitudeColor);
 
         // logic for splitting primary and secondary text
         String place = currentEarthquake.getPlace();
@@ -60,11 +68,11 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         }
 
         // set value for primary place
-        TextView primaryPlace = (TextView) convertView.findViewById(R.id.primary_place);
+        TextView primaryPlace = (TextView) convertView.findViewById(R.id.primary_location);
         primaryPlace.setText(primary);
 
         // set value for secondary place
-        TextView secondaryPlace = (TextView) convertView.findViewById(R.id.secondary_place);
+        TextView secondaryPlace = (TextView) convertView.findViewById(R.id.location_offset);
         secondaryPlace.setText(secondary);
 
         // set value for View with id date in list_item.xml for the convertView
@@ -80,5 +88,33 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // return the updated view for the current position
         return convertView;
+    }
+
+    private int getMagnitudeColor(double magnitude) {
+        // convert the decimal values to nearest integer values and return color according to the
+        // integer
+        switch ((int) Math.floor(magnitude)) {
+            case 0:
+            case 1:
+                return ContextCompat.getColor(getContext(), R.color.magnitude1);
+            case 2:
+                return ContextCompat.getColor(getContext(), R.color.magnitude2);
+            case 3:
+                return ContextCompat.getColor(getContext(), R.color.magnitude3);
+            case 4:
+                return ContextCompat.getColor(getContext(), R.color.magnitude4);
+            case 5:
+                return ContextCompat.getColor(getContext(), R.color.magnitude5);
+            case 6:
+                return ContextCompat.getColor(getContext(), R.color.magnitude6);
+            case 7:
+                return ContextCompat.getColor(getContext(), R.color.magnitude7);
+            case 8:
+                return ContextCompat.getColor(getContext(), R.color.magnitude8);
+            case 9:
+                return ContextCompat.getColor(getContext(), R.color.magnitude9);
+            default:
+                return ContextCompat.getColor(getContext(), R.color.magnitude10plus);
+        }
     }
 }

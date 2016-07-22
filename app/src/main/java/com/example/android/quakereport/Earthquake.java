@@ -15,16 +15,20 @@ public class Earthquake {
     // to store magnitude
     private double mMagnitude;
 
+    // to store url of usgs website for the earthquake
+    private String mUrl;
+
     /**
      * Constructor to initialize fields
      * @param magnitude magnitude {@link Earthquake#mMagnitude}
      * @param place place {@link Earthquake#mPlace}
      * @param dateInMillis date {@link Earthquake#mDateInMillis}
      */
-    public Earthquake(double magnitude, String place, long dateInMillis) {
+    public Earthquake(double magnitude, String place, long dateInMillis, String url) {
         mMagnitude = magnitude;
         mPlace = place;
         mDateInMillis = dateInMillis;
+        mUrl = url;
     }
 
     /**
@@ -50,5 +54,14 @@ public class Earthquake {
      */
     public String getPlace() {
         return mPlace;
+    }
+
+    /**
+     * Returns the url of earthquake on usgs site
+     *
+     * @return url {@link Earthquake#mUrl}
+     */
+    public String getUrl() {
+        return mUrl;
     }
 }
