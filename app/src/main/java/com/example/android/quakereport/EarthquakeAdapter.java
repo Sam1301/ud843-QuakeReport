@@ -78,7 +78,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // set value for View with id date in list_item.xml for the convertView
         TextView dateTextView = (TextView) convertView.findViewById(R.id.date);
         Date date = new Date(currentEarthquake.getDateInMillis());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         dateTextView.setText(dateFormat.format(date));
 
         // set value for View with id time in list_item.xml for the convertView
