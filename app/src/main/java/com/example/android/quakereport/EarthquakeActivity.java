@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -91,7 +92,7 @@ public class EarthquakeActivity extends AppCompatActivity {
      *
      * @param earthquakes earhtquake {@link Earthquake} data
      */
-    private void updateUI(final ArrayList<Earthquake> earthquakes) {
+    private void updateUI(List<Earthquake> earthquakes) {
         // clear previous data in adapter
         mAdapter.clear();
 
@@ -99,20 +100,20 @@ public class EarthquakeActivity extends AppCompatActivity {
         mAdapter.addAll(earthquakes);
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, ArrayList<Earthquake>> {
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
 
         @Override
-        protected ArrayList<Earthquake> doInBackground(String... urls) {
+        protected List<Earthquake> doInBackground(String... urls) {
             // check if input urls is not null or empty string
             if (urls.length < 1 || urls[0] == null)
                 return null;
 
-            ArrayList<Earthquake> earthquakes = QueryUtils.fetchEarthquakesData(urls[0]);
+            List<Earthquake> earthquakes = QueryUtils.fetchEarthquakesData(urls[0]);
             return earthquakes;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
+        protected void onPostExecute(List<Earthquake> earthquakes) {
             if (earthquakes == null || earthquakes.isEmpty())
                 return;
 
