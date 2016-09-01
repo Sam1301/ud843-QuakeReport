@@ -15,9 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,10 +30,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderCallbacks<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
-    private static final String usgsUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private static final String mUsgsUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private static EarthquakeAdapter mAdapter;
 
     @Override
@@ -82,9 +83,8 @@ public class EarthquakeActivity extends AppCompatActivity {
             Log.e(LOG_TAG, "ListView instance null");
         }
 
-        // fire off an async task to request usgsUrl
-        new EarthquakeAsyncTask().execute(usgsUrl);
-
+        // initialize a loader to request mUsgsUrl
+        getLoaderManager().initLoader(0, null, this);
     }
 
     /**
@@ -100,25 +100,43 @@ public class EarthquakeActivity extends AppCompatActivity {
         mAdapter.addAll(earthquakes);
     }
 
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
-
-        @Override
-        protected List<Earthquake> doInBackground(String... urls) {
-            // check if input urls is not null or empty string
-            if (urls.length < 1 || urls[0] == null)
-                return null;
-
-            List<Earthquake> earthquakes = QueryUtils.fetchEarthquakesData(urls[0]);
-            return earthquakes;
-        }
-
-        @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
-            if (earthquakes == null || earthquakes.isEmpty())
-                return;
-
-            // update the ui with earthquakes data
-            updateUI(earthquakes);
-        }
+    /**
+     * Loader callback onCreateLoader to create and return a EarthquakeLoader
+     * {@link EarthquakeLoader}
+     *
+     * @param i      id of loader
+     * @param bundle bundle passed in initLoader of LoaderManager
+     * @return EarthquakeLoader {@link EarthquakeLoader}
+     */
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
+        return new EarthquakeLoader(EarthquakeActivity.this, mUsgsUrl);
     }
+
+    /**
+     * Loader callback onLoadFinished called with loader has finished loading
+     *
+     * @param loader      {@link Loader<List<Earthquake>>}
+     * @param earthquakes {@link List<Earthquake>}
+     */
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        if (earthquakes == null || earthquakes.isEmpty())
+            return;
+
+        // update the ui with earthquakes data
+        updateUI(earthquakes);
+    }
+
+    /**
+     * Loader callback onLoaderReset called with the data source is no longer valid and the
+     * loader resets
+     *
+     * @param loader {@link Loader<List<Earthquake>>}
+     */
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        mAdapter.clear();
+    }
+
 }
