@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
     private static final String mUsgsUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private static EarthquakeAdapter mAdapter;
+    private static TextView mEmptyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
             Log.e(LOG_TAG, "ListView instance null");
         }
 
+
+        // set empty view on list view
+        mEmptyTextView = (TextView) findViewById(R.id.empty_view);
+        if (earthquakeListView != null) {
+            earthquakeListView.setEmptyView(mEmptyTextView);
+        }
+
         // initialize a loader to request mUsgsUrl
         getLoaderManager().initLoader(0, null, this);
     }
@@ -121,6 +131,16 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
      */
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        // hide progress bar
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
+
+        // set text for empty textView
+        mEmptyTextView.setText(R.string.empty_view_string);
+
         if (earthquakes == null || earthquakes.isEmpty())
             return;
 

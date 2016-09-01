@@ -17,4 +17,5 @@
     <string name="app_name">Quake Report</string>
     <string name="magnitude_string_format">%s</string>
     <string name="no_browser">cannot find browser</string>
+    <string name="empty_view_string">No earthquakes found!</string>
 </resources>
