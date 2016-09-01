@@ -16,8 +16,11 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +41,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private static final String mUsgsUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private static EarthquakeAdapter mAdapter;
     private static TextView mEmptyTextView;
+    private static ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
             Log.e(LOG_TAG, "ListView instance null");
         }
 
+        // find progress bar
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         // set empty view on list view
         mEmptyTextView = (TextView) findViewById(R.id.empty_view);
@@ -93,8 +99,19 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
             earthquakeListView.setEmptyView(mEmptyTextView);
         }
 
-        // initialize a loader to request mUsgsUrl
-        getLoaderManager().initLoader(0, null, this);
+        // initialize a loader to request mUsgsUrl only if there is network connectivity
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            getLoaderManager().initLoader(0, null, this);
+        }
+        // else display no internet connection message
+        else {
+            mEmptyTextView.setText(R.string.no_iternet_message);
+            mProgressBar.setVisibility(View.GONE);
+        }
+
     }
 
     /**
@@ -114,7 +131,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
      * Loader callback onCreateLoader to create and return a EarthquakeLoader
      * {@link EarthquakeLoader}
      *
-     * @param i      id of loader
+     * @param i id of loader
      * @param bundle bundle passed in initLoader of LoaderManager
      * @return EarthquakeLoader {@link EarthquakeLoader}
      */
@@ -133,10 +150,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
 
         // hide progress bar
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
+        mProgressBar.setVisibility(View.GONE);
+
 
         // set text for empty textView
         mEmptyTextView.setText(R.string.empty_view_string);
